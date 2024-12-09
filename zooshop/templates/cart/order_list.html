@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+  Заказы
+{% endblock %}
+{% block content %}
+<div style="min-height: 70vh">
+<h1 class="mb-5 text-center fw-bold p-0" 
+        style="color: #4747ff; 
+              background: linear-gradient(135deg, #4747ff, #00d4ff); 
+              background-clip: text;
+              color: transparent; 
+              font-size: 3rem; 
+              text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+              border-radius: 15px;">
+    Заказы
+</h1>
+<div style="background: white; padding: 20px; border-radius: 20px; width: 30vw; min-height: 70 vh">
+  <form method="get" action="">
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Применить сортировку</button>
+  </form>
+  </div>
+{% for order in page_obj %}
+  <div class="row" style="margin-top: 20px">
+    <div class="card">
+      <div class="card-body">           
+        <h5 class="card-title text-primary">{{ order.date }}</h5>
+        <p class="card-text text-primary">
+            {{ order.status }}
+        </p>
+        <p class="card-text text-success">
+            {{ order.price }} ₽
+        </p>
+        <a class="btn btn-primary" href="{% url 'cart:order_detail' order.id %}">Подробнее</a>
+        {% if user.is_staff %}
+        <a href="{% url 'cart:edit_order_status' order.id %}" class="btn btn-primary">Изменить статус</a>
+        {% endif %}
+    </div>
+  </div>
+{% endfor %}
+</div>
+{% endblock %}

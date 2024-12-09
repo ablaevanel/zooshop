@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+  {{ object.name }}
+{% endblock %}
+{% block content %}
+  <div class="container mt-5">
+    <h1 class="pb-3 mb-4 text-center text-primary">{{ object.name }}</h1> 
+
+    <div class="row mt-3">
+      <div class="col-12 col-md-6 mb-4">
+        <div class="card shadow-sm border-0 rounded">
+          <div class="card-body">
+            <h2 class="h4 text-primary">Цена</h2>
+            <p class="fs-4 text-success">{{ object.price }} ₽</p>
+            <h2 class="h4 text-primary">Категория</h2>
+            <p>{{ object.category }}</p>
+            <h2 class="h4 text-primary">Описание</h2>
+            <p>{{ object.description }}</p>
+            {% if not user.is_staff %}
+            <a href="{% url 'cart:add_to_cart' object.id %}" class="btn btn-primary">Добавить в корзину</a>
+            {% endif %}
+            <a href="{% url 'catalog:review_list' object.id %}" class="btn btn-primary">Отзывы</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-4 mb-3">
+        <div class="image-wrapper" style="border: 3px solid #ddd; border-radius: 10px; padding: 5px;">
+          <img 
+            class="img-fluid rounded" 
+            height="400" width="400" 
+            src="{% static 'img/image-holder.png' %}" alt="{{ object.name }}">
+        </div>
+      </div>    
+    </div>
+  </div>
+{% endblock %}

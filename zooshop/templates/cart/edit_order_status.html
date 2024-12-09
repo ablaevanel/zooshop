@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Редактировать статус заказа{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-primary">Редактировать статус заказа №{{ order.id }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            {{ form.status.label_tag }}
+            {{ form.status }}
+        </div>
+        <button type="submit" class="btn btn-success">Сохранить</button>
+        <a href="{% url 'cart:order_list' %}" class="btn btn-secondary">Назад</a>
+    </form>
+</div>
+{% endblock %}

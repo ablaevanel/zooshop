@@ -1,0 +1,49 @@
+{% load static %}
+<header>
+  <nav class="navbar navbar-light" style="background-color: skyblue;" >
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'homepage:index' %}">
+        <img src="{% static 'img/pet-shop.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
+        PetLovers
+      </a>
+      {% with request.resolver_match.view_name as view_name %}        
+        <ul class="nav  nav-pills">
+          <li class="nav-item">              
+            <a class="nav-link {% if view_name == 'homepage:index' %} active {% endif %}" href="{% url 'homepage:index' %}">
+              Главная страница
+            </a>
+          </li>
+          <li class="nav-item">              
+            <a class="nav-link {% if view_name == 'catalog:product_list' %} active {% endif %}" href="{% url 'catalog:product_list' %}">
+              Каталог
+            </a>
+          </li>
+        {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link {% if view_name == 'cart:order_list' %} active {% endif %}" href="{% url 'cart:order_list' %}">
+              Заказы
+            </a>
+          </li>
+          {% if not user.is_staff %}
+          <li class="nav-item">
+            <a class="nav-link {% if view_name == 'cart:cart_list' %} active {% endif %}" href="{% url 'cart:cart_list' %}">
+              Корзина
+            </a>
+          </li>
+          {% endif %}
+          <span class="navbar-text">Пользователь: <b>{{ user.username }}</b></span>        
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}">Выйти</a>
+          </li>
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link{% if view_name == 'login' %} active {% endif %}" href="{% url 'login' %}">Войти</a>
+          </li>  
+          <li class="nav-item">
+            <a class="nav-link{% if view_name == 'registration' %} active {% endif %}" href="{% url 'registration' %}">Регистрация</a>
+          </li>
+        {% endif %}
+      {% endwith %}      
+    </div>
+  </nav> 
+</header>

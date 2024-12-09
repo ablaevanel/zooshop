@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+  Заказ №{{ object.id }} - {{ object.date }}
+{% endblock %}
+{% block content %}
+  <div class="container mt-5" style="min-height: 70vh">
+    <h1 class="pb-3 mb-4 text-center text-primary">Заказ №{{ object.id }} - {{ object.date }}</h1> 
+
+    <div class="row mt-3">
+      <div class="col-12 col-md-6 mb-4">
+        <div class="card shadow-sm border-0 rounded">
+          <div class="card-body">
+            <h2 class="h4 text-primary">Цена</h2>
+            <p class="fs-4 text-success">{{ object.price }} ₽</p>
+            <h2 class="h4 text-primary">Статус</h2>
+            <p>{{ object.status }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <h2 class="h4 text-primary">Позиции заказа</h2>
+      {% for position in client_order_positions %}
+        <div class="col-12 mb-3">
+          <div class="card shadow-sm border-0 rounded">
+            <div class="card-body d-flex justify-content-between align-items-center">
+              <div>
+                <h5 class="card-title text-primary">{{ position.product.name }}</h5>
+                <p class="mb-0">Количество: {{ position.position_number }}</p>
+                <p class="mb-0">Цена за единицу: {{ position.product.price }} ₽</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    {% if object.status == 'issued' %}
+      <div class="row mt-4">
+        <h2 class="h4 text-primary">Оставить отзыв</h2>
+        <form method="POST">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <div class="mb-3">
+            <label for="product_id" class="form-label">Выберите товар</label>
+            <select name="product_id" class="form-control">
+              {% for position in client_order_positions %}
+                <option value="{{ position.product.id }}">{{ position.product.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary">Оставить отзыв</button>
+        </form>
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}

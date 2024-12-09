@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+  Каталог
+{% endblock %}
+{% block content %}
+<h1 class="mb-5 text-center fw-bold p-0" 
+        style="color: #4747ff; 
+              background: linear-gradient(135deg, #4747ff, #00d4ff); 
+              background-clip: text;
+              color: transparent; 
+              font-size: 3rem; 
+              text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+              border-radius: 15px;">
+    Каталог
+</h1>
+<div style="background: white; padding: 20px; border-radius: 20px; width: 30vw">
+<form method="get" action="">
+  {{ form.as_p }}
+  <button type="submit" class="btn btn-primary">Применить сортировку</button>
+</form>
+</div>
+<div class="row">
+{% for product in page_obj %}
+  <div class="col-6 col-md-4 my-1">
+    <div class="card">
+      <img 
+      class="img-fluid card-img-top" 
+      height="400" width="300"
+      src="{% static 'img/image-holder.png' %}">
+      <div class="card-body">           
+        <h5 class="card-title text-primary">{{ product.name }}</h5>
+        <p class="card-text text-success">
+            {{ product.price }} ₽
+        </p>
+        <p class="card-text">
+          {{ product.description|truncatewords:10 }}
+        </p>
+        <a class="btn btn-primary" href="{% url 'catalog:product_detail' product.id %}">Подробнее</a>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+</div>
+{% endblock %}
